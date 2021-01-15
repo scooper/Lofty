@@ -1,0 +1,7 @@
+# omit cmake build folder
+/build
+/bin
+/lib
+
+# any file with the .ignore file extention
+*.ignore

@@ -1,0 +1,3 @@
+[submodule "Lofty/external/spdlog"]
+	path = Lofty/external/spdlog
+	url = https://github.com/gabime/spdlog.git
