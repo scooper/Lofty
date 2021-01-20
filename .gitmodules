@@ -1,3 +1,6 @@
 [submodule "Lofty/external/spdlog"]
 	path = Lofty/external/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "Lofty/external/glfw"]
+	path = Lofty/external/glfw
+	url = https://github.com/glfw/glfw.git

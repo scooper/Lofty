@@ -9,7 +9,7 @@ namespace Lofty
     void Logger::Init()
     {
         spdlog::set_pattern("%^[%T] %n:%$ %v");
-        s_Logger = spdlog::stdout_color_mt("Application");
+        s_Logger = spdlog::stdout_color_mt("Lofty");
         s_Logger->set_level(spdlog::level::trace);
     }
 }

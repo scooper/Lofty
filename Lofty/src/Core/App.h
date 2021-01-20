@@ -8,6 +8,8 @@ namespace Lofty
         App();
         virtual ~App();
         void Run();
+    private:
+        bool m_Running = true;
     };
 
     App* AppInit();

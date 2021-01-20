@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Logger.h"
+#include "Window.h"
 
 extern Lofty::App* AppInit();
 
@@ -19,6 +20,12 @@ namespace Lofty
     {
         LOG_INFO("Application started!");
 
+        auto window = Window::Create();
+
+        while (m_Running)
+        {
+            // do stuff
+        }
     }
 }
 
