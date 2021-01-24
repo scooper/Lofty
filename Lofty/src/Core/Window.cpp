@@ -8,6 +8,11 @@ namespace Lofty
     {
     }
 
+    Window::~Window()
+    {
+
+    }
+
     std::unique_ptr<Window> Window::Create(const WindowData& data)
     {
         // platform dependent code

@@ -4,3 +4,6 @@
 [submodule "Lofty/external/glfw"]
 	path = Lofty/external/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "Lofty/external/glad"]
+	path = Lofty/external/glad
+	url = https://github.com/Dav1dde/glad.git

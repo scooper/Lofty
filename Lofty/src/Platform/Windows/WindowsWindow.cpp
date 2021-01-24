@@ -1,4 +1,7 @@
 #include "WindowsWindow.h"
+#include "Rendering/RenderContext.h"
+#include "Core/Event.h"
+#include "Core/AppEvents.h"
 
 namespace Lofty
 {
@@ -15,13 +18,17 @@ namespace Lofty
 
     WindowsWindow::~WindowsWindow()
     {
-        glfwDestroyWindow(m_Window);
-        glfwTerminate();
+        Close();
     }
 
     void WindowsWindow::Init()
     {
         LOG_INFO("Initialising GLFW");
+
+        if(!glfwInit())
+        {
+            LOG_ERROR("GLFW Failed to initialise");
+        }
 
         glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -37,11 +44,30 @@ namespace Lofty
         if (!m_Window)
         {
             glfwTerminate();
-            LOG_ERROR("GLFW Failed to initialise!");
+            LOG_ERROR("GLFW Failed to create window");
             // need some other event to make the program shut down (turn App's m_Running field to false)
         }
 
-        glfwMakeContextCurrent(m_Window);
-        glfwSwapInterval(1);
+
+        auto context = RenderContext::Create(m_Window);
+
+
+        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
+        {
+                AppCloseEvent event;
+                EventDispatcher::GetInstance().Post(event);
+        });
+        
+    }
+
+    void WindowsWindow::Close()
+    {
+        glfwDestroyWindow(m_Window);
+        glfwTerminate();
+    }
+
+    void WindowsWindow::SwapBuffers()
+    {
+        glfwSwapBuffers(m_Window);
     }
 }

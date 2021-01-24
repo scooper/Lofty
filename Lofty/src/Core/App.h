@@ -1,4 +1,5 @@
 #pragma once
+#include "Event.h"
 
 namespace Lofty
 {
@@ -8,6 +9,7 @@ namespace Lofty
         App();
         virtual ~App();
         void Run();
+        void Close(const Event& event);
     private:
         bool m_Running = true;
     };

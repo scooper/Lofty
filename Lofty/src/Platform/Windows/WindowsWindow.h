@@ -10,9 +10,12 @@ namespace Lofty
     {
     public:
         WindowsWindow(const WindowData& data);
-        ~WindowsWindow();
+        virtual ~WindowsWindow();
 
         void Init() override;
+        void Close() override;
+
+        void SwapBuffers() override;
     private:
         GLFWwindow* m_Window;
     };

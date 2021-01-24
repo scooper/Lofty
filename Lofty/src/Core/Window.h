@@ -2,7 +2,6 @@
 #include <memory>
 #include <string>
 
-
 namespace Lofty
 {
     struct WindowData
@@ -18,7 +17,10 @@ namespace Lofty
     public:
         Window(const WindowData& data);
         virtual ~Window();
-        virtual void Init();
+        virtual void Init() = 0;
+        virtual void Close() = 0;
+
+        virtual void SwapBuffers() = 0;
 
         int GetWidth() { return m_Data.width; }
         int GetHeight() { return m_Data.height; }

@@ -66,4 +66,4 @@ target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC "$<$<CONFIG:RELEASE>:_
 add_subdirectory("external")
 
 # link external projects (annoyingly they have to be in the same place we defined our target lib)
-target_link_libraries("${CMAKE_PROJECT_NAME}" spdlog glfw)
+target_link_libraries("${CMAKE_PROJECT_NAME}" spdlog glfw glad)
