@@ -2,6 +2,7 @@
 #include "Rendering/RenderContext.h"
 #include "Core/Event.h"
 #include "Core/AppEvents.h"
+#include "Core/InputEvents.h"
 
 namespace Lofty
 {
@@ -51,12 +52,89 @@ namespace Lofty
 
         auto context = RenderContext::Create(m_Window);
 
+        glfwSetWindowUserPointer(m_Window, &m_Data);
 
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
-        {
+            {
                 AppCloseEvent event;
                 EventDispatcher::GetInstance().Post(event);
-        });
+            });
+
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)
+            {
+                WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+
+                data->height = height;
+                data->width = width;
+
+                AppResizeEvent event(width, height);
+                EventDispatcher::GetInstance().Post(event);
+
+            });
+
+        glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+            {
+                // convert to enum format (GLFW directly translates)
+                Key loftyKey = Key{ key };
+
+                if (loftyKey == Key::UNKNOWN)
+                    return;
+
+                switch (action)
+                {
+                case GLFW_RELEASE:
+                {
+                    KeyReleaseEvent event(loftyKey);
+                    EventDispatcher::GetInstance().Post(event);
+                    break;
+                }
+                case GLFW_PRESS:
+                case GLFW_REPEAT:
+                {
+                    KeyPressEvent event(loftyKey);
+                    EventDispatcher::GetInstance().Post(event);
+                    break;
+                }
+                default:
+                    break;
+                }
+            });
+
+        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
+            {
+                // convert to enum format (GLFW directly translates)
+                MouseButton loftyMB = MouseButton{ button };
+
+                switch (action)
+                {
+                case GLFW_RELEASE:
+                {
+                    MouseReleaseEvent event(loftyMB);
+                    EventDispatcher::GetInstance().Post(event);
+                    break;
+                }
+                case GLFW_PRESS:
+                {
+                    MousePressEvent event(loftyMB);
+                    EventDispatcher::GetInstance().Post(event);
+                    break;
+                }
+                default:
+                    break;
+                }
+            });
+
+        glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos)
+            {
+                MouseMoveEvent event(xpos, ypos);
+                EventDispatcher::GetInstance().Post(event);
+            });
+
+        glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset)
+            {
+                ScrollEvent event(xoffset, yoffset);
+                EventDispatcher::GetInstance().Post(event);
+            });
         
     }
 
@@ -64,6 +142,12 @@ namespace Lofty
     {
         glfwDestroyWindow(m_Window);
         glfwTerminate();
+    }
+
+    void WindowsWindow::OnUpdate()
+    {
+        glfwPollEvents();
+        SwapBuffers();
     }
 
     void WindowsWindow::SwapBuffers()

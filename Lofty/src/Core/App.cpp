@@ -2,13 +2,13 @@
 #include "Logger.h"
 #include "Window.h"
 #include "AppEvents.h"
+#include "InputEvents.h"
 
 #include <functional>
 
 // TEMP: 
 // temp to at least have a render loop
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 extern Lofty::App* AppInit();
 
@@ -16,7 +16,11 @@ namespace Lofty
 { 
     App::App()
     {
+        // bind events
         EventDispatcher::GetInstance().Subscribe(AppCloseEvent::eventType, std::bind(&App::Close, this, std::placeholders::_1));
+        EventDispatcher::GetInstance().Subscribe(AppResizeEvent::eventType, std::bind(&App::OnResize, this, std::placeholders::_1));
+        EventDispatcher::GetInstance().Subscribe(KeyPressEvent::eventType, std::bind(&App::OnKeyEvent, this, std::placeholders::_1));
+        EventDispatcher::GetInstance().Subscribe(KeyReleaseEvent::eventType, std::bind(&App::OnKeyEvent, this, std::placeholders::_1));
     }
 
     App::~App()
@@ -34,10 +38,11 @@ namespace Lofty
         {
             // TEMP: 
             // we need this temporarily so windows doesnt think the program is hanging on an infinite loop
-            glfwPollEvents();
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-            window->SwapBuffers();
+            window->OnUpdate();
         }
     }
 
@@ -45,6 +50,18 @@ namespace Lofty
     {
         LOG_INFO(event.ToString());
         m_Running = false;
+    }
+
+    // TEMP?
+    void App::OnResize(const Event& event)
+    {
+        LOG_INFO(event.ToString());
+    }
+
+    // TEMP?
+    void App::OnKeyEvent(const Event& event)
+    {
+        LOG_INFO(event.ToString());
     }
 }
 

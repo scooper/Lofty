@@ -14,6 +14,8 @@ namespace Lofty
 
         void Init() override;
         void Close() override;
+        
+        void OnUpdate() override;
 
         void SwapBuffers() override;
     private:

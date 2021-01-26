@@ -20,6 +20,10 @@ namespace Lofty
         virtual void Init() = 0;
         virtual void Close() = 0;
 
+        // fires in every main loop iteration
+        virtual void OnUpdate() = 0;
+
+        // TODO: is this glfw specific?
         virtual void SwapBuffers() = 0;
 
         int GetWidth() { return m_Data.width; }

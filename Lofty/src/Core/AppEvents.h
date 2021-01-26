@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Event.h"
-#include <sstream>
 
 namespace Lofty
 {
@@ -16,7 +15,7 @@ namespace Lofty
         std::string ToString() const override
         {
             std::stringstream ss;
-            ss << "AppResizeEvent" << m_Width << ", " << m_Height;
+            ss << "AppResizeEvent: W=" << m_Width << ", H=" << m_Height;
             return ss.str();
         }
 

@@ -28,7 +28,10 @@ namespace Lofty
 
     void GLContext::Init()
     {
+        LOG_INFO("Initialising GLAD");
+
         glfwMakeContextCurrent(m_Window);
+
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
         if (status == 0)
         {
