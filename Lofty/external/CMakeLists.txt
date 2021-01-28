@@ -16,3 +16,8 @@ add_subdirectory("glfw")
 add_subdirectory("glad")
 set_target_properties("glad" PROPERTIES FOLDER "GLAD")
 set_target_properties("glad-generate-files" PROPERTIES FOLDER "GLAD")
+
+
+# math
+add_subdirectory("glm")
+

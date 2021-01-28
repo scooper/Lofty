@@ -7,3 +7,6 @@
 [submodule "Lofty/external/glad"]
 	path = Lofty/external/glad
 	url = https://github.com/Dav1dde/glad.git
+[submodule "Lofty/external/glm"]
+	path = Lofty/external/glm
+	url = https://github.com/g-truc/glm.git
