@@ -88,10 +88,15 @@ namespace Lofty
                     EventDispatcher::GetInstance().Post(event);
                     break;
                 }
-                case GLFW_PRESS:
                 case GLFW_REPEAT:
                 {
-                    KeyPressEvent event(loftyKey);
+                    KeyPressEvent event(loftyKey, true);
+                    EventDispatcher::GetInstance().Post(event);
+                    break;
+                }
+                case GLFW_PRESS:
+                {
+                    KeyPressEvent event(loftyKey, false);
                     EventDispatcher::GetInstance().Post(event);
                     break;
                 }
@@ -134,6 +139,21 @@ namespace Lofty
             {
                 ScrollEvent event(xoffset, yoffset);
                 EventDispatcher::GetInstance().Post(event);
+            });
+
+        // i.e. minimised
+        glfwSetWindowIconifyCallback(m_Window, [](GLFWwindow* window, int minimised)
+            {
+                if (minimised)
+                {
+                    AppMinimiseEvent event;
+                    EventDispatcher::GetInstance().Post(event);
+                }
+                else
+                {
+                    AppRestoreEvent event;
+                    EventDispatcher::GetInstance().Post(event);
+                }
             });
         
     }

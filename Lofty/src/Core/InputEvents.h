@@ -23,22 +23,28 @@ namespace Lofty
 
     class KeyPressEvent : public KeyEvent
     {
-        INIT_EVENT_TYPE("KeyPressEvent")
+        EVENT_INIT_TYPE("KeyPressEvent")
     public:
-        KeyPressEvent(Key key) : KeyEvent(key) {}
+        KeyPressEvent(Key key, bool isRepeat) : KeyEvent(key), m_IsRepeat(isRepeat) {}
         virtual ~KeyPressEvent() = default;
+
+        // we need to know sometimes if it is a repeat
+        // as there is a delay between first press and repeat
+        bool IsRepeat() { return m_IsRepeat; }
 
         std::string ToString() const override
         {
             std::stringstream ss;
-            ss << "KeyPressEvent: " << static_cast<int>(m_Key);
+            ss << "KeyPressEvent: " << static_cast<int>(m_Key) << " Repeat: " << m_IsRepeat;
             return ss.str();
         }
+    private:
+        bool m_IsRepeat;
     };
 
     class KeyReleaseEvent : public KeyEvent
     {
-        INIT_EVENT_TYPE("KeyReleaseEvent")
+        EVENT_INIT_TYPE("KeyReleaseEvent")
     public:
         KeyReleaseEvent(Key key) : KeyEvent(key) {}
         virtual ~KeyReleaseEvent() = default;
@@ -70,7 +76,7 @@ namespace Lofty
 
     class MousePressEvent : public MouseButtonEvent
     {
-        INIT_EVENT_TYPE("MousePressEvent")
+        EVENT_INIT_TYPE("MousePressEvent")
     public:
         MousePressEvent(MouseButton button) : MouseButtonEvent(button) {}
         virtual ~MousePressEvent() = default;
@@ -85,7 +91,7 @@ namespace Lofty
 
     class MouseReleaseEvent : public MouseButtonEvent
     {
-        INIT_EVENT_TYPE("MouseReleaseEvent")
+        EVENT_INIT_TYPE("MouseReleaseEvent")
     public:
         MouseReleaseEvent(MouseButton button) : MouseButtonEvent(button) {}
         virtual ~MouseReleaseEvent() = default;
@@ -100,7 +106,7 @@ namespace Lofty
 
     class MouseMoveEvent : public Event
     {
-        INIT_EVENT_TYPE("MouseMoveEvent")
+        EVENT_INIT_TYPE("MouseMoveEvent")
     public:
         MouseMoveEvent(double xpos, double ypos): m_xPos(xpos), m_yPos(ypos) {}
         virtual ~MouseMoveEvent() = default;
@@ -121,7 +127,7 @@ namespace Lofty
 
     class ScrollEvent : public Event
     {
-        INIT_EVENT_TYPE("ScrollEvent")
+        EVENT_INIT_TYPE("ScrollEvent")
     public:
         ScrollEvent(double xoffset, double yoffset): m_xOffset(xoffset), m_yOffset(yoffset) {}
         virtual ~ScrollEvent() = default;

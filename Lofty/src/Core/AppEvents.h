@@ -7,7 +7,7 @@ namespace Lofty
     // 
     class AppResizeEvent : public Event
     {
-        INIT_EVENT_TYPE("AppResizeEvent")
+        EVENT_INIT_TYPE("AppResizeEvent")
     public:
         AppResizeEvent(unsigned int width, unsigned int height): m_Width(width), m_Height(height) {};
         virtual ~AppResizeEvent() = default;
@@ -26,7 +26,7 @@ namespace Lofty
     // 
     class AppCloseEvent : public Event
     {
-        INIT_EVENT_TYPE("AppCloseEvent")
+        EVENT_INIT_TYPE("AppCloseEvent")
     public:
         AppCloseEvent() {};
         virtual ~AppCloseEvent() = default;
@@ -34,6 +34,32 @@ namespace Lofty
         std::string ToString() const override
         {
             return "AppCloseEvent";
+        }
+    };
+
+    class AppMinimiseEvent : public Event
+    {
+        EVENT_INIT_TYPE("AppMinimiseEvent")
+    public:
+        AppMinimiseEvent() {};
+        virtual ~AppMinimiseEvent() = default;
+
+        std::string ToString() const override
+        {
+            return "AppMinimiseEvent";
+        }
+    };
+
+    class AppRestoreEvent : public Event
+    {
+        EVENT_INIT_TYPE("AppRestoreEvent")
+    public:
+        AppRestoreEvent() {};
+        virtual ~AppRestoreEvent() = default;
+
+        std::string ToString() const override
+        {
+            return "AppRestoreEvent";
         }
     };
 }

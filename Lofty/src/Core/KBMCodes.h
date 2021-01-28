@@ -144,7 +144,6 @@ namespace Lofty
         M6       = 5,
         M7       = 6,
         M8       = 7,
-        LAST     = M8,
         LEFT     = M1,
         RIGHT    = M2,
         MIDDLE   = M3

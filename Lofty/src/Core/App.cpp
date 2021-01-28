@@ -17,15 +17,20 @@ namespace Lofty
     App::App()
     {
         // bind events
-        EventDispatcher::GetInstance().Subscribe(AppCloseEvent::eventType, std::bind(&App::Close, this, std::placeholders::_1));
-        EventDispatcher::GetInstance().Subscribe(AppResizeEvent::eventType, std::bind(&App::OnResize, this, std::placeholders::_1));
-        EventDispatcher::GetInstance().Subscribe(KeyPressEvent::eventType, std::bind(&App::OnKeyEvent, this, std::placeholders::_1));
-        EventDispatcher::GetInstance().Subscribe(KeyReleaseEvent::eventType, std::bind(&App::OnKeyEvent, this, std::placeholders::_1));
+        EventDispatcher::GetInstance().Subscribe(AppCloseEvent::eventType, EVENT_BIND_FUNC(App::Close, this));
+        EventDispatcher::GetInstance().Subscribe(AppResizeEvent::eventType, EVENT_BIND_FUNC(App::OnResize, this));
+        EventDispatcher::GetInstance().Subscribe({ AppMinimiseEvent::eventType, AppRestoreEvent::eventType }, EVENT_BIND_FUNC(App::OnMinimiseRestore, this));
+
+        // TEMP?
+        EventDispatcher::GetInstance().Subscribe({ KeyPressEvent::eventType,
+                                                   MouseMoveEvent::eventType,
+                                                   MousePressEvent::eventType,
+                                                   ScrollEvent::eventType }, EVENT_BIND_FUNC(App::OnEvent, this));
     }
 
     App::~App()
     {
-        
+
     }
 
     void App::Run()
@@ -34,14 +39,20 @@ namespace Lofty
 
         auto window = Window::Create();
 
+        // main loop
         while (m_Running)
         {
-            // TEMP: 
-            // we need this temporarily so windows doesnt think the program is hanging on an infinite loop
+            Time time;
+            TimePoint now = time.Now();
+            Duration deltaTime = now - m_LastFrame;
+            m_LastFrame = now;
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+            for (Layer* layer : m_Layers)
+            {
+                layer->OnUpdate(deltaTime);
+            }
 
+            // window system specific code required after each loop
             window->OnUpdate();
         }
     }
@@ -59,8 +70,19 @@ namespace Lofty
     }
 
     // TEMP?
-    void App::OnKeyEvent(const Event& event)
+    void App::OnEvent(const Event& event)
     {
+        LOG_INFO(event.ToString());
+    }
+
+    void App::OnMinimiseRestore(const Event& event)
+    {
+        if (event.Type() == AppMinimiseEvent::eventType)
+            m_Minimised = true;
+        
+        if (event.Type() == AppRestoreEvent::eventType)
+            m_Minimised = false;
+
         LOG_INFO(event.ToString());
     }
 }

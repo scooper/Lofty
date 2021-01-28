@@ -2,6 +2,7 @@
 /build
 /bin
 /lib
+/helpful_docs
 
 # any file with the .ignore file extention
 *.ignore

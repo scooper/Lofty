@@ -41,13 +41,14 @@ namespace Lofty
 // events, even if someone gives two events the same name)
 
 // the idea is to call this at the start of every event class, passing a name (as a C string) into the macro
-#define INIT_EVENT_TYPE(Name) \
+#define EVENT_INIT_TYPE(Name) \
 public: \
     inline static const char* m_Name = Name; \
     inline static const EventType eventType = { reinterpret_cast<size_t>(&m_Name), Name }; \
     const EventType Type() const override { return eventType; }
 
-    
+// bind macro (specify class function and class instance)
+#define EVENT_BIND_FUNC(Function, Instance) std::bind(&Function, Instance, std::placeholders::_1)
 
     // event base
     class Event
@@ -72,9 +73,20 @@ public: \
             return instance;
         }
 
+        // Subscribes a single function to a single event
         void Subscribe(const EventType& type, std::function<void(const Event&)>&& function)
         {
             m_Observers[type].push_back(function);
+        }
+
+        // Subscribes a single function to multiple events
+        // (for when you want a single function to consume many events and handle internally - e.g. a generic OnEvent function)
+        void Subscribe(const std::vector<EventType>& types, std::function<void(const Event&)> && function)
+        {
+            for (EventType type : types)
+            {
+                m_Observers[type].push_back(function);
+            }
         }
                          
         void Post(const Event& event) const
@@ -106,7 +118,7 @@ public: \
     //// example event implementation
     //class DemoEvent : public Event
     //{
-    //    INIT_EVENT_TYPE("DemoEvent")
+    //    EVENT_INIT_TYPE("DemoEvent")
     //public:
     //    DemoEvent();
     //    virtual ~DemoEvent();
