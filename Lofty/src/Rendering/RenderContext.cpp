@@ -16,6 +16,10 @@ namespace Lofty
             return nullptr;
         case RenderAPI::OpenGL:
             return std::make_unique<GLContext>(static_cast<GLFWwindow*>(window));
+        case RenderAPI::DirectX:
+            return nullptr;
+        case RenderAPI::Vulkan:
+            return nullptr;
         }
     }
 }

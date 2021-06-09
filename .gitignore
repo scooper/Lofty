@@ -4,5 +4,8 @@
 /lib
 /helpful_docs
 
+# vs code config directory
+/.vscode
+
 # any file with the .ignore file extention
 *.ignore

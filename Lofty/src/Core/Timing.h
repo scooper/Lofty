@@ -43,7 +43,7 @@ namespace Lofty
         TimePoint Now() { return TimePoint(m_Timer.now()); }
 
     private:
-        std::chrono::high_resolution_clock m_Timer;
+        std::chrono::steady_clock m_Timer;
     };
     
 }

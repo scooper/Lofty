@@ -75,7 +75,7 @@ namespace Lofty
         glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
             {
                 // convert to enum format (GLFW directly translates)
-                Key loftyKey = Key{ key };
+                Key loftyKey = static_cast<Key>(key);
 
                 if (loftyKey == Key::UNKNOWN)
                     return;

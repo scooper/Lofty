@@ -15,8 +15,10 @@ namespace Lofty
 
     std::unique_ptr<Window> Window::Create(const WindowData& data)
     {
-        // platform dependent code
+        // platform dependent code (windows and linux are the same at the moment)
 #if WINDOWS
+        return std::make_unique<WindowsWindow>(data);
+#elif LINUX
         return std::make_unique<WindowsWindow>(data);
 #else
         // figure out a way to crash or something if this reaches the else (platform not supported)

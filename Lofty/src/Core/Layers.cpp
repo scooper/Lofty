@@ -1,5 +1,5 @@
+#include <algorithm>
 #include "Layers.h"
-
 
 namespace Lofty
 {
